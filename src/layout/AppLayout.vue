@@ -41,8 +41,9 @@ const enlaces = [
 
 <style lang="scss" scoped>
 .layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
+  /* Mobile first: todo en columna; en pantallas anchas el menú pasa al lado. */
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 
   &__menu {
@@ -51,10 +52,7 @@ const enlaces = [
     padding: 1.75rem 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    gap: 1.5rem;
   }
   &__marca-sup {
     font-size: 0.7rem;
@@ -83,7 +81,7 @@ const enlaces = [
   }
   &__num {
     width: 1.4rem; height: 1.4rem;
-    display: grid; place-items: center;
+    display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
     background: rgba($white, 0.12);
     font-size: 0.7rem; font-weight: 700;
@@ -98,10 +96,11 @@ const enlaces = [
   &__cuenta-sup { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; }
   &__cuenta-nombre { font-weight: 600; margin-top: 0.25rem; }
   &__cuenta-banco { opacity: 0.7; margin-top: 0.1rem; }
-  &__contenido { padding: 2.25rem 2.5rem; max-width: 1200px; width: 100%; }
+  &__contenido { padding: 1.25rem; width: 100%; max-width: 1200px; }
 }
-@media (max-width: 860px) {
-  .layout { grid-template-columns: 1fr; }
-  .layout__menu { position: static; height: auto; }
+@media (min-width: 860px) {
+  .layout { flex-direction: row; }
+  .layout__menu { width: 260px; flex: 0 0 260px; position: sticky; top: 0; height: 100vh; gap: 2rem; }
+  .layout__contenido { flex: 1 1 auto; padding: 2.25rem 2.5rem; }
 }
 </style>
