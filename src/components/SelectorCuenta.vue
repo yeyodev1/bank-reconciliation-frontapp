@@ -24,7 +24,8 @@ const cuentas = useCuentasStore()
 
 <style lang="scss" scoped>
 .selector {
-  display: flex; flex-direction: column; gap: 0.35rem; min-width: 18rem;
+  display: flex; flex-direction: column; gap: 0.35rem; flex: 1 1 100%;
+  @media (min-width: 600px) { flex: 0 1 18rem; }
   &__etiqueta { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: $text-secondary; }
   &__aviso { font-size: 0.8rem; color: $alert-warning; }
 }
