@@ -140,7 +140,8 @@ const etiquetaEstado: Record<string, string> = {
 .formulario {
   background: $white; border: 1px solid rgba($primary-dark, 0.1); border-radius: 8px; padding: 1.5rem;
   display: flex; flex-direction: column; gap: 1rem;
-  label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.8rem; color: $text-secondary; }
+  label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.8rem; color: $text-secondary; flex: 1 1 100%; }
+  @media (min-width: 600px) { label { flex: 1 1 240px; } }
 }
 .fila--activa td { background: rgba($primary, 0.05); }
 </style>
