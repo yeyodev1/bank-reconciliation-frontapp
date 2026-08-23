@@ -11,11 +11,8 @@ defineProps<{ titulo: string }>()
 
 <style lang="scss" scoped>
 .panel {
-  background: $white; border: 1px solid rgba($primary-dark, 0.1); border-radius: 8px;
-  &__titulo {
-    padding: 0.7rem 1.15rem; border-bottom: 1px solid rgba($primary-dark, 0.08);
-    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: $text-secondary;
-  }
+  background: $blanco; border: 1px solid $gris-200; border-radius: $radio;
+  &__titulo { padding: 0.8rem 1.15rem; border-bottom: 1px solid $gris-200; font-family: $font-secondary; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: $gris-500; }
   &__cuerpo { padding: 1.15rem; font-size: 0.9rem; }
 }
 </style>
