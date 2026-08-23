@@ -1,92 +1,82 @@
 @use './colorVariables.module.scss' as *;
 @use './fonts.module.scss' as *;
 
-html, body {
-  background-color: $white;
-  margin: 0;
-  font-family: $font-principal;
-}
+html, body { background: $blanco; margin: 0; font-family: $font-principal; color: $negro; }
+body { font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; font-feature-settings: 'cv11', 'ss01'; }
+*, *::before, *::after { box-sizing: border-box; }
+a { color: inherit; }
+::selection { background: $negro; color: $blanco; }
 
-:root {
-  --bg: #{$white};
-  --text: #{$primary-dark};
-  --border: #{rgba($primary-dark, 0.08)};
-  --accent: #{$primary};
-}
+h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+h3 { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
 
-[data-theme='dark'] {
-  --bg: #{$primary-dark};
-  --text: #{$text-light};
-  --border: #{rgba($white, 0.12)};
-  --accent: #{$primary};
-}
+/* ---------------- layout de página ---------------- */
+.pagina { display: flex; flex-direction: column; gap: 1.75rem; }
+.pagina__cabecera p { color: $gris-500; margin-top: 0.5rem; font-size: 0.95rem; max-width: 60ch; }
+.pagina__cabecera .paso { font-family: $font-secondary; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: $gris-500; margin-bottom: 0.6rem; }
 
-body {
-  background-color: var(--bg);
-  color: var(--text);
-}
-
-/* ---------------- base compartida ---------------- */
-
-h2 { font-size: 1.45rem; font-weight: 600; }
-h3 { font-size: 1.05rem; font-weight: 600; }
-
-.pagina { display: flex; flex-direction: column; gap: 1.5rem; }
-.pagina__cabecera p { color: $text-secondary; margin-top: 0.3rem; font-size: 0.92rem; }
-
-.fila { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; > .boton { flex: 1 1 auto; } }
-@media (min-width: 600px) { .fila > .boton { flex: 0 0 auto; } }
-/* Mobile first: las tarjetas van apiladas; desde 600px se reparten en fila con flex. Nunca grid. */
-.rejilla { display: flex; flex-wrap: wrap; gap: 1rem; > * { flex: 1 1 100%; min-width: 0; } }
+.fila { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; > .boton { flex: 1 1 auto; } }
+.rejilla { display: flex; flex-wrap: wrap; gap: 1px; background: $gris-200; border: 1px solid $gris-200; > * { flex: 1 1 100%; min-width: 0; } }
 @media (min-width: 600px) {
+  .fila > .boton { flex: 0 0 auto; }
   .rejilla > * { flex: 1 1 200px; }
   .rejilla--2 > * { flex: 1 1 320px; }
 }
 
-select, input[type='text'], input[type='number'], input[type='date'], textarea {
-  font: inherit; padding: 0.55rem 0.75rem;
-  border: 1px solid rgba($primary-dark, 0.2); border-radius: 6px; background: $white; color: $primary-dark;
-  &:focus { outline: none; border-color: $primary; box-shadow: 0 0 0 3px rgba($primary, 0.15); }
-  &:disabled { opacity: 0.6; }
+/* ---------------- controles ---------------- */
+select, input[type='text'], input[type='number'], input[type='date'], input[type='email'], input[type='password'], textarea {
+  font: inherit; width: 100%; padding: 0.65rem 0.8rem; color: $negro; background: $blanco;
+  border: 1px solid $gris-300; border-radius: $radio; transition: border-color $transicion, box-shadow $transicion;
+  &::placeholder { color: $gris-400; }
+  &:focus { outline: none; border-color: $negro; box-shadow: 0 0 0 3px rgba($negro, 0.08); }
+  &:disabled { opacity: 0.5; }
 }
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.8rem center; padding-right: 2.2rem; }
 
 .boton {
-  font: inherit; font-weight: 500; cursor: pointer;
-  padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid transparent;
-  background: $primary; color: $white; transition: background 0.15s, opacity 0.15s;
-  &:hover { background: darken($primary, 8); }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
-  &--secundario { background: transparent; color: $primary-dark; border-color: rgba($primary-dark, 0.25); &:hover { background: rgba($primary-dark, 0.05); } }
-  &--peligro { background: transparent; color: $alert-error; border-color: rgba($alert-error, 0.5); &:hover { background: $alert-error-bg; } }
-  &--exito { background: $secondary; &:hover { background: darken($secondary, 8); } }
-  &--enlace { background: none; color: $primary; padding: 0; border: 0; &:hover { text-decoration: underline; background: none; } }
+  font: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+  padding: 0.7rem 1.25rem; border-radius: $radio; border: 1px solid $negro; background: $negro; color: $blanco;
+  transition: background $transicion, color $transicion, transform $transicion, border-color $transicion, opacity $transicion;
+  i { font-size: 0.85em; }
+  &:hover { background: $gris-800; transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+  &:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  &--secundario { background: transparent; color: $negro; border-color: $gris-300; &:hover { background: $gris-100; border-color: $negro; } }
+  &--peligro { background: transparent; color: $negro; border-color: $gris-300; &:hover { background: $negro; color: $blanco; border-color: $negro; } }
+  &--exito { background: $negro; }
+  &--enlace { background: none; color: $gris-600; padding: 0; border: 0; &:hover { color: $negro; background: none; transform: none; text-decoration: underline; text-underline-offset: 3px; } }
 }
 
-.tabla-envoltura { overflow-x: auto; background: $white; border: 1px solid rgba($primary-dark, 0.1); border-radius: 8px; }
+/* ---------------- tablas ---------------- */
+.tabla-envoltura { overflow-x: auto; border: 1px solid $gris-200; border-radius: $radio; background: $blanco; }
 .tabla {
   width: 100%; border-collapse: collapse; font-size: 0.86rem;
-  th {
-    text-align: left; padding: 0.6rem 0.9rem; white-space: nowrap;
-    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; color: $text-secondary;
-    background: rgba($primary-dark, 0.04);
-  }
-  td { padding: 0.5rem 0.9rem; border-top: 1px solid rgba($primary-dark, 0.07); vertical-align: top; }
+  th { text-align: left; padding: 0.75rem 1rem; white-space: nowrap; font-family: $font-secondary; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: $gris-500; border-bottom: 1px solid $gris-200; }
+  td { padding: 0.7rem 1rem; border-top: 1px solid $gris-100; vertical-align: top; transition: background $transicion; }
+  tbody tr:hover td { background: $gris-50; }
   .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; color: $text-secondary; }
+  .mono { font-family: $font-secondary; font-size: 0.76rem; color: $gris-500; }
   .recorta { max-width: 28rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pos { color: darken($secondary, 12); }
-  .neg { color: $alert-error; }
+  .pos { color: $negro; font-weight: 500; }
+  .neg { color: $gris-500; }
 }
 
-.etiqueta { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-.etiqueta--ok { background: $alert-success-bg; color: darken($alert-success, 15); }
-.etiqueta--aviso { background: $alert-warning-bg; color: darken($alert-warning, 20); }
-.etiqueta--error { background: $alert-error-bg; color: darken($alert-error, 10); }
-.etiqueta--neutro { background: rgba($primary-dark, 0.08); color: $primary-dark; }
+/* ---------------- piezas ---------------- */
+.etiqueta { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid $gris-300; color: $gris-700; background: $blanco; }
+.etiqueta--ok { background: $negro; color: $blanco; border-color: $negro; }
+.etiqueta--aviso { border-color: $gris-700; color: $negro; border-style: dashed; }
+.etiqueta--error { background: $gris-800; color: $blanco; border-color: $gris-800; }
+.etiqueta--neutro { background: $gris-100; border-color: $gris-100; }
 
-.nota { font-size: 0.8rem; color: $text-secondary; }
-dl.datos {
-  display: flex; flex-wrap: wrap; row-gap: 0.3rem;
-  dt { flex: 1 1 55%; color: $text-secondary; }
-  dd { flex: 1 1 45%; text-align: right; font-variant-numeric: tabular-nums; }
-}
+.nota { font-size: 0.8rem; color: $gris-500; }
+.mono { font-family: $font-secondary; }
+dl.datos { display: flex; flex-wrap: wrap; row-gap: 0.35rem; margin: 0; dt { flex: 1 1 55%; color: $gris-500; } dd { flex: 1 1 45%; margin: 0; text-align: right; font-variant-numeric: tabular-nums; } }
+
+/* ---------------- transiciones de página ---------------- */
+.pagina-enter-active, .pagina-leave-active { transition: opacity 220ms ease, transform 220ms cubic-bezier(0.2, 0, 0, 1); }
+.pagina-enter-from { opacity: 0; transform: translateY(8px); }
+.pagina-leave-to { opacity: 0; transform: translateY(-4px); }
+.aparece-enter-active { transition: opacity 260ms ease, transform 260ms cubic-bezier(0.2, 0, 0, 1); }
+.aparece-enter-from { opacity: 0; transform: translateY(10px); }
+.aparece-leave-active { transition: opacity 150ms ease; }
+.aparece-leave-to { opacity: 0; }
