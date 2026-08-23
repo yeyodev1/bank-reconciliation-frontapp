@@ -22,15 +22,20 @@ $white: $blanco;
 $text-light: $blanco;
 $text-secondary: $gris-500;
 
-// Estados, también en gris: la jerarquía la dan el peso y el contraste
-$alert-warning: $gris-700;
-$alert-info: $gris-600;
-$alert-success: $negro;
-$alert-error: $negro;
-$alert-warning-bg: $gris-100;
-$alert-info-bg: $gris-50;
-$alert-success-bg: $gris-100;
-$alert-error-bg: $gris-100;
+// Capa semántica: un color por significado, siempre el mismo en toda la app.
+//   verde  = entra dinero / correcto / cuadra
+//   rojo   = sale dinero / error / por investigar
+//   ámbar  = atención: revisar antes de seguir
+//   azul   = información / emparejado por referencia
+$verde: #15803d;   $verde-bg: #ecfdf3;   $verde-borde: #86efac;
+$rojo: #b91c1c;    $rojo-bg: #fef2f2;    $rojo-borde: #fca5a5;
+$ambar: #b45309;   $ambar-bg: #fffbeb;   $ambar-borde: #fcd34d;
+$azul: #1d4ed8;    $azul-bg: #eff6ff;    $azul-borde: #93c5fd;
+
+$alert-warning: $ambar;   $alert-warning-bg: $ambar-bg;
+$alert-info: $azul;       $alert-info-bg: $azul-bg;
+$alert-success: $verde;   $alert-success-bg: $verde-bg;
+$alert-error: $rojo;      $alert-error-bg: $rojo-bg;
 
 $radio: 4px;
 $transicion: 180ms cubic-bezier(0.2, 0, 0, 1);
