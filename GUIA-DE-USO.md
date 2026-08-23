@@ -87,16 +87,19 @@ Diferencia = banco ajustado − libros ajustado
 | | | *Arrastre* | de meses anteriores, sigue sin cobrarse |
 | | | *Posteriores* | fecha después del extracto: todavía no le tocaba |
 
-### Colores (solo negro, blanco y gris)
+### Colores e iconos (siempre significan lo mismo)
 
-| Ves | Significa |
-|---|---|
-| Número **negro** y en negrita | entrada (+) / valor principal |
-| Número **gris** | salida (−) / secundario |
-| Recuadro **borde negro** | correcto / confirmado |
-| Recuadro **borde punteado** | atención: revisa antes de seguir |
-| Recuadro **fondo negro** | error, o mes **cerrado** (bloqueado) |
-| Etiqueta **negra rellena** | estado fuerte (emparejado por referencia, por investigar, cerrado) |
+| Color | Icono | Significa | Dónde lo ves |
+|---|---|---|---|
+| 🟢 **Verde** | ✓ `circle-check`, ↓ `arrow-down` | entra dinero · correcto · cuadra | Entradas, "Conciliados", "El mes cuadra", continuidad OK, etiqueta `exacto` |
+| 🔴 **Rojo** | ✕ `circle-xmark`, ↑ `arrow-up`, 🔍 `magnifying-glass` | sale dinero · error · por investigar | Salidas, diferencia ≠ 0, avisos de error, etiqueta `por investigar` |
+| 🟠 **Ámbar** | ⚠ `triangle-exclamation`, ⏳ `hourglass` | atención: revisar antes de seguir | cobertura incompleta, formato no reconocido, `tolerancia`, `ambiguo`, `signo deducido`, mes "en proceso", pendientes |
+| 🔵 **Azul** | # `hashtag`, 🏷 `tag`, ⓘ `circle-info` | información · emparejado por documento | etiqueta `referencia`, cargos bancarios reconocidos, avisos informativos |
+| ⚫ **Negro** | 🔒 `lock` | estado fuerte / bloqueado | mes cerrado (fondo negro), botones principales |
+| ⚪ **Gris** | — | secundario | etiquetas de tablas, notas, valores de apoyo |
+
+Los avisos llevan una **barra izquierda** del color de su significado. Las cifras llevan una **línea
+superior** verde/roja/ámbar cuando su valor es positivo/negativo/de atención.
 
 ### Los tres botones del mes
 
