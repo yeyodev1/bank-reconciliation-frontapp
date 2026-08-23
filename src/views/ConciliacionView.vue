@@ -97,7 +97,8 @@ const libroPendientes = computed(() => {
 <template>
   <div class="pagina">
     <header class="pagina__cabecera">
-      <h2>3 · Conciliación del mes</h2>
+      <p class="paso">Paso 03</p>
+      <h2>Conciliación del mes</h2>
       <p>El motor cruza el Excel del BANCO contra el Excel del SISTEMA: primero por referencia exacta, luego por importe, signo y fecha.</p>
     </header>
 
@@ -109,7 +110,7 @@ const libroPendientes = computed(() => {
           <option v-for="m in c.meses" :key="m" :value="m">{{ nombreMes(m) }}</option>
         </select>
       </label>
-      <button v-if="c" class="boton boton--secundario" :disabled="cargando" @click="calcular">Recalcular</button>
+      <button v-if="c" class="boton boton--secundario" :disabled="cargando" @click="calcular"><i class="fa-solid fa-rotate"></i> Recalcular</button>
     </div>
 
     <Aviso v-if="error" tipo="error">{{ error }}</Aviso>
@@ -129,16 +130,16 @@ const libroPendientes = computed(() => {
           <p v-if="c.periodo?.corridoEn" class="nota mono" style="margin-top: 0.4rem">
             Última corrida guardada: {{ cuando(c.periodo.corridoEn) }}<span v-if="c.periodo.cerradoEn"> · cerrado el {{ cuando(c.periodo.cerradoEn) }}</span>
           </p>
-          <p v-if="c.periodo?.nota" class="nota" style="margin-top: 0.4rem; color: #b45309">{{ c.periodo.nota }}</p>
+          <p v-if="c.periodo?.nota" class="nota" style="margin-top: 0.4rem; color: #0a0a0a"><i class="fa-regular fa-note-sticky"></i> {{ c.periodo.nota }}</p>
         </div>
         <div class="fila">
           <button v-if="!cerrado" class="boton boton--secundario" :disabled="pendiente" @click="accion('guardar')">
-            {{ pendiente ? 'Guardando…' : 'Guardar esta corrida' }}
+            <i class="fa-solid fa-floppy-disk"></i> {{ pendiente ? 'Guardando…' : 'Guardar esta corrida' }}
           </button>
           <button v-if="!cerrado" class="boton boton--exito" :disabled="pendiente || !c.cuadre.cuadra" :title="c.cuadre.cuadra ? undefined : 'Primero hay que explicar la diferencia.'" @click="confirmando = 'cerrar'">
-            Cerrar {{ nombreMes(c.mes) }}
+            <i class="fa-solid fa-lock"></i> Cerrar {{ nombreMes(c.mes) }}
           </button>
-          <button v-if="cerrado" class="boton boton--peligro" :disabled="pendiente" @click="confirmando = 'reabrir'">Reabrir el mes</button>
+          <button v-if="cerrado" class="boton boton--peligro" :disabled="pendiente" @click="confirmando = 'reabrir'"><i class="fa-solid fa-lock-open"></i> Reabrir el mes</button>
         </div>
       </section>
 
@@ -275,19 +276,21 @@ const libroPendientes = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.campo { display: flex; flex-direction: column; gap: 0.35rem; span { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: $text-secondary; } }
+.campo { display: flex; flex-direction: column; gap: 0.45rem; flex: 1 1 100%; @media (min-width: 600px) { flex: 0 1 14rem; } span { font-family: $font-secondary; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em; color: $gris-500; } }
 .estado {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: flex-start;
-  background: $white; border: 1px solid rgba($primary-dark, 0.1); border-radius: 8px; padding: 1.25rem;
-  &--cerrado { background: rgba($primary-dark, 0.04); }
-  &__sup { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: $text-secondary; }
-  &__titulo { font-size: 1.15rem; font-weight: 600; margin: 0.2rem 0 0.3rem; }
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.25rem; align-items: flex-start;
+  background: $blanco; border: 1px solid $gris-200; border-radius: $radio; padding: 1.5rem; transition: background $transicion;
+  &--cerrado { background: $negro; color: $blanco; .nota { color: $gris-400; } }
+  &__sup { font-family: $font-secondary; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em; color: $gris-500; }
+  &__titulo { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; margin: 0.3rem 0 0.4rem; }
 }
 .pestanas {
-  display: flex; gap: 0.25rem; border-bottom: 1px solid rgba($primary-dark, 0.1);
+  display: flex; gap: 0; border-bottom: 1px solid $gris-200; overflow-x: auto;
   button {
-    font: inherit; font-size: 0.88rem; background: none; border: 0; border-bottom: 2px solid transparent; padding: 0.6rem 0.9rem; cursor: pointer; color: $text-secondary;
-    &.activa { color: $primary; border-bottom-color: $primary; font-weight: 600; }
+    font: inherit; font-size: 0.86rem; font-weight: 500; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 0.7rem 1rem; cursor: pointer; color: $gris-500; white-space: nowrap;
+    transition: color $transicion, border-color $transicion;
+    &:hover { color: $negro; }
+    &.activa { color: $negro; border-bottom-color: $negro; }
   }
 }
 .lista { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
