@@ -57,16 +57,21 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
   .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .mono { font-family: $font-secondary; font-size: 0.76rem; color: $gris-500; }
   .recorta { max-width: 28rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pos { color: $negro; font-weight: 500; }
-  .neg { color: $gris-500; }
+  .pos { color: $verde; font-weight: 500; }
+  .neg { color: $rojo; }
 }
 
 /* ---------------- piezas ---------------- */
-.etiqueta { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid $gris-300; color: $gris-700; background: $blanco; }
-.etiqueta--ok { background: $negro; color: $blanco; border-color: $negro; }
-.etiqueta--aviso { border-color: $gris-700; color: $negro; border-style: dashed; }
-.etiqueta--error { background: $gris-800; color: $blanco; border-color: $gris-800; }
-.etiqueta--neutro { background: $gris-100; border-color: $gris-100; }
+.etiqueta { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.18rem 0.6rem; border-radius: 999px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid $gris-300; color: $gris-700; background: $blanco; white-space: nowrap; i { font-size: 0.7rem; } }
+.etiqueta--ok { background: $verde-bg; color: $verde; border-color: $verde-borde; }
+.etiqueta--info { background: $azul-bg; color: $azul; border-color: $azul-borde; }
+.etiqueta--aviso { background: $ambar-bg; color: $ambar; border-color: $ambar-borde; }
+.etiqueta--error { background: $rojo-bg; color: $rojo; border-color: $rojo-borde; }
+.etiqueta--neutro { background: $gris-100; border-color: $gris-200; color: $gris-700; }
+.etiqueta--negra { background: $negro; color: $blanco; border-color: $negro; }
+
+/* Semáforo de texto: el mismo color que las etiquetas, para frases */
+.ok { color: $verde; } .mal { color: $rojo; } .ojo { color: $ambar; } .info { color: $azul; }
 
 .nota { font-size: 0.8rem; color: $gris-500; }
 .mono { font-family: $font-secondary; }
