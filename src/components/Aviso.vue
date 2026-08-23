@@ -21,9 +21,10 @@ const icono = iconos[props.tipo ?? 'info']
   &__contenido { flex: 1; min-width: 0; }
   &__titulo { font-weight: 600; margin-bottom: 0.2rem; }
   &__cuerpo { color: $gris-700; :deep(a) { color: $negro; font-weight: 500; } }
-  &--success { border-color: $negro; .aviso__icono { color: $negro; } }
-  &--error { background: $negro; color: $blanco; border-color: $negro; .aviso__icono { color: $blanco; } .aviso__cuerpo { color: $gris-300; } }
-  &--warning { border-style: dashed; border-color: $gris-700; .aviso__icono { color: $negro; } }
-  &--info { background: $gris-50; }
+  border-left-width: 4px;
+  &--success { background: $verde-bg; border-color: $verde-borde; border-left-color: $verde; .aviso__icono, .aviso__titulo { color: $verde; } }
+  &--error { background: $rojo-bg; border-color: $rojo-borde; border-left-color: $rojo; .aviso__icono, .aviso__titulo { color: $rojo; } }
+  &--warning { background: $ambar-bg; border-color: $ambar-borde; border-left-color: $ambar; .aviso__icono, .aviso__titulo { color: $ambar; } }
+  &--info { background: $azul-bg; border-color: $azul-borde; border-left-color: $azul; .aviso__icono, .aviso__titulo { color: $azul; } }
 }
 </style>
