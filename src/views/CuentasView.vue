@@ -126,7 +126,8 @@ const etiquetaEstado: Record<string, string> = {
             <td>
               <template v-if="c.ultimoPeriodo">
                 {{ nombreMes(c.ultimoPeriodo.mes) }}
-                <span class="etiqueta" :class="c.ultimoPeriodo.estado === 'CERRADO' ? 'etiqueta--neutro' : c.ultimoPeriodo.estado === 'CUADRADO' ? 'etiqueta--ok' : 'etiqueta--aviso'">
+                <span class="etiqueta" :class="c.ultimoPeriodo.estado === 'CERRADO' ? 'etiqueta--negra' : c.ultimoPeriodo.estado === 'CUADRADO' ? 'etiqueta--ok' : 'etiqueta--aviso'">
+                  <i :class="c.ultimoPeriodo.estado === 'CERRADO' ? 'fa-solid fa-lock' : c.ultimoPeriodo.estado === 'CUADRADO' ? 'fa-solid fa-check' : 'fa-solid fa-hourglass-half'"></i>
                   {{ etiquetaEstado[c.ultimoPeriodo.estado] }}
                 </span>
               </template>
