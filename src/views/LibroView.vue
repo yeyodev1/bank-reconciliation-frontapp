@@ -71,16 +71,16 @@ async function guardar() {
       </Aviso>
 
       <div class="rejilla">
-        <Cifra etiqueta="Entra (Debe)" :valor="dinero(analisis.debe)" tono="positivo" />
-        <Cifra etiqueta="Sale (Haber)" :valor="dinero(analisis.haber)" tono="negativo" />
-        <Cifra etiqueta="Neto" :valor="dinero(analisis.debe - analisis.haber)" />
+        <Cifra etiqueta="Entra (Debe)" icono="fa-solid fa-arrow-down-long" :valor="dinero(analisis.debe)" tono="positivo" />
+        <Cifra etiqueta="Sale (Haber)" icono="fa-solid fa-arrow-up-long" :valor="dinero(analisis.haber)" tono="negativo" />
+        <Cifra etiqueta="Neto" icono="fa-solid fa-equals" :valor="dinero(analisis.debe - analisis.haber)" />
       </div>
 
       <Panel v-if="analisis.cuentas.hayDatos" titulo="Cuenta contable">
         <p>La cuenta dominante del reporte es <span class="mono">{{ analisis.cuentas.dominante }}</span>.</p>
         <template v-if="analisis.cuentas.ajenos.length">
-          <p class="mal" style="margin-top: 0.5rem">
-            Hay <strong>{{ analisis.cuentas.ajenos.length }}</strong> asiento(s) archivados en otra cuenta contable. Si se cargan aquí, se conciliarían contra el extracto equivocado y quedarían pendientes de los dos lados para siempre.
+          <p class="ojo" style="margin-top: 0.5rem">
+            <i class="fa-solid fa-triangle-exclamation"></i> Hay <strong>{{ analisis.cuentas.ajenos.length }}</strong> asiento(s) archivados en otra cuenta contable. Si se cargan aquí, se conciliarían contra el extracto equivocado y quedarían pendientes de los dos lados para siempre.
           </p>
           <ul class="mono lista" style="margin-top: 0.5rem">
             <li v-for="(a, i) in analisis.cuentas.ajenos.slice(0, 5)" :key="i">
@@ -128,6 +128,5 @@ async function guardar() {
 </template>
 
 <style lang="scss" scoped>
-.mal { color: $negro; }
 .lista { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
 </style>
