@@ -54,11 +54,13 @@ const etiquetaEstado: Record<string, string> = {
         <h2>Cuentas bancarias</h2>
         <p>Cada cuenta concilia por su lado: un extracto del banco contra el libro del sistema.</p>
       </div>
-      <button class="boton" @click="mostrandoFormulario = !mostrandoFormulario">
+      <button class="boton" :class="{ 'boton--secundario': mostrandoFormulario }" @click="mostrandoFormulario = !mostrandoFormulario">
+        <i :class="mostrandoFormulario ? 'fa-solid fa-xmark' : 'fa-solid fa-plus'"></i>
         {{ mostrandoFormulario ? 'Cancelar' : 'Nueva cuenta' }}
       </button>
     </header>
 
+    <Transition name="aparece">
     <form v-if="mostrandoFormulario" class="formulario" @submit.prevent="guardar">
       <h3>Nueva cuenta</h3>
       <div class="rejilla">
@@ -81,9 +83,10 @@ const etiquetaEstado: Record<string, string> = {
       </p>
       <Aviso v-if="error" tipo="error">{{ error }}</Aviso>
       <div class="fila">
-        <button class="boton" type="submit" :disabled="guardando">{{ guardando ? 'Guardando…' : 'Guardar cuenta' }}</button>
+        <button class="boton" type="submit" :disabled="guardando"><i class="fa-solid fa-check"></i> {{ guardando ? 'Guardando…' : 'Guardar cuenta' }}</button>
       </div>
     </form>
+    </Transition>
 
     <Aviso v-if="cuentas.error" tipo="error">{{ cuentas.error }}</Aviso>
 
@@ -138,10 +141,10 @@ const etiquetaEstado: Record<string, string> = {
 
 <style lang="scss" scoped>
 .formulario {
-  background: $white; border: 1px solid rgba($primary-dark, 0.1); border-radius: 8px; padding: 1.5rem;
+  background: $blanco; border: 1px solid $gris-200; border-radius: $radio; padding: 1.5rem;
   display: flex; flex-direction: column; gap: 1rem;
-  label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.8rem; color: $text-secondary; flex: 1 1 100%; }
+  label { display: flex; flex-direction: column; gap: 0.4rem; font-family: $font-secondary; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: $gris-500; flex: 1 1 100%; padding: 0.75rem; background: $blanco; }
   @media (min-width: 600px) { label { flex: 1 1 240px; } }
 }
-.fila--activa td { background: rgba($primary, 0.05); }
+.fila--activa td { background: $gris-50; }
 </style>
