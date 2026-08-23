@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { authService, type UsuarioSesion } from '@/services/auth.service'
 
 export interface UserState {
   id: string | null
@@ -18,22 +19,28 @@ export const useUserStore = defineStore('user', {
   actions: {
     hydrate() {
       const token = localStorage.getItem('access_token')
-      const id = localStorage.getItem('user_id')
-
       this.isAuthenticated = !!token
-      this.id = id || null
+      this.id = localStorage.getItem('user_id')
+      this.name = localStorage.getItem('user_name')
+      this.email = localStorage.getItem('user_email')
     },
 
-    setUser(payload: { id?: string; name?: string; email?: string }) {
-      if (payload.id !== undefined) {
-        this.id = payload.id
-        try {
-          localStorage.setItem('user_id', payload.id)
-        } catch {}
-      }
-      if (payload.name) this.name = payload.name
-      if (payload.email) this.email = payload.email
+    async login(email: string, password: string) {
+      const { token, usuario } = await authService.login(email, password)
+      try { localStorage.setItem('access_token', token) } catch {}
+      this.setUser(usuario)
+    },
+
+    setUser(payload: UsuarioSesion) {
+      this.id = payload.id
+      this.name = payload.nombre
+      this.email = payload.email
       this.isAuthenticated = true
+      try {
+        localStorage.setItem('user_id', payload.id)
+        localStorage.setItem('user_name', payload.nombre)
+        localStorage.setItem('user_email', payload.email)
+      } catch {}
     },
 
     clear() {
@@ -42,8 +49,7 @@ export const useUserStore = defineStore('user', {
       this.email = null
       this.isAuthenticated = false
       try {
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('user_id')
+        for (const k of ['access_token', 'user_id', 'user_name', 'user_email']) localStorage.removeItem(k)
       } catch {}
     },
   },
