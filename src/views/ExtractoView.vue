@@ -61,7 +61,8 @@ async function guardar() {
 <template>
   <div class="pagina">
     <header class="pagina__cabecera">
-      <h2>1 · Excel del BANCO</h2>
+      <p class="paso">Paso 01</p>
+      <h2>Excel del BANCO</h2>
       <p>El extracto tal como lo descargas del banco. Primero se lee y se revisa; se guarda solo cuando lo confirmes.</p>
     </header>
 
@@ -166,6 +167,7 @@ async function guardar() {
         <div class="fila">
           <SelectorCuenta :deshabilitado="guardando" />
           <button class="boton" :disabled="guardando" @click="guardar">
+            <i :class="guardando ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-floppy-disk'"></i>
             {{ guardando ? 'Guardando…' : `Guardar ${analisis.movimientos.length} movimientos` }}
           </button>
         </div>
@@ -177,7 +179,7 @@ async function guardar() {
 </template>
 
 <style lang="scss" scoped>
-.ok { color: darken($alert-success, 15); }
-.mal { color: $alert-error; }
+.ok { color: $negro; }
+.mal { color: $negro; }
 .lista { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
 </style>
