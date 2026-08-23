@@ -125,7 +125,10 @@ const libroPendientes = computed(() => {
       <section class="estado" :class="{ 'estado--cerrado': cerrado }">
         <div>
           <p class="estado__sup">Estado de {{ nombreMes(c.mes) }}</p>
-          <p class="estado__titulo">{{ estado ? etiquetaEstado[estado] : 'Sin guardar' }}</p>
+          <p class="estado__titulo">
+            <i class="estado__icono" :class="[cerrado ? 'fa-solid fa-lock' : estado === 'CUADRADO' ? 'fa-solid fa-circle-check estado__icono--ok' : estado === 'EN_PROCESO' ? 'fa-solid fa-hourglass-half estado__icono--ojo' : 'fa-regular fa-circle']"></i>
+            {{ estado ? etiquetaEstado[estado] : 'Sin guardar' }}
+          </p>
           <p class="nota">{{ estado ? explicacion[estado] : 'Este cálculo todavía no se ha guardado. Guardarlo deja constancia de los emparejamientos y de las partidas pendientes.' }}</p>
           <p v-if="c.periodo?.corridoEn" class="nota mono" style="margin-top: 0.4rem">
             Última corrida guardada: {{ cuando(c.periodo.corridoEn) }}<span v-if="c.periodo.cerradoEn"> · cerrado el {{ cuando(c.periodo.cerradoEn) }}</span>
@@ -161,11 +164,11 @@ const libroPendientes = computed(() => {
 
       <!-- Cuadre -->
       <div class="rejilla">
-        <Cifra etiqueta="Saldo según banco" :valor="dinero(c.cuadre.saldoBanco)" />
-        <Cifra etiqueta="+ pendientes del sistema" :valor="dinero(c.cuadre.pendienteSistema)" pequeno />
-        <Cifra etiqueta="Saldo según libros" :valor="dinero(c.cuadre.saldoLibros)" />
-        <Cifra etiqueta="+ pendientes del banco" :valor="dinero(c.cuadre.pendienteBanco)" pequeno />
-        <Cifra etiqueta="Diferencia" :valor="dinero(c.cuadre.diferencia)" :tono="c.cuadre.cuadra ? 'positivo' : 'negativo'" />
+        <Cifra etiqueta="Saldo según banco" icono="fa-solid fa-building-columns" :valor="dinero(c.cuadre.saldoBanco)" />
+        <Cifra etiqueta="+ pendientes del sistema" icono="fa-solid fa-plus" :valor="dinero(c.cuadre.pendienteSistema)" pequeno />
+        <Cifra etiqueta="Saldo según libros" icono="fa-solid fa-book" :valor="dinero(c.cuadre.saldoLibros)" />
+        <Cifra etiqueta="+ pendientes del banco" icono="fa-solid fa-plus" :valor="dinero(c.cuadre.pendienteBanco)" pequeno />
+        <Cifra etiqueta="Diferencia" :icono="c.cuadre.cuadra ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'" :valor="dinero(c.cuadre.diferencia)" :tono="c.cuadre.cuadra ? 'positivo' : 'negativo'" />
       </div>
       <Aviso :tipo="c.cuadre.cuadra ? 'success' : 'warning'">
         <strong>{{ c.cuadre.cuadra ? 'El mes cuadra.' : `Faltan ${dinero(Math.abs(c.cuadre.diferencia ?? 0))} por explicar.` }}</strong>
@@ -174,11 +177,11 @@ const libroPendientes = computed(() => {
 
       <!-- Resumen -->
       <div v-if="resumen" class="rejilla">
-        <Cifra etiqueta="Extracto (banco)" :valor="`${resumen.totalBanco} mov.`" pequeno />
-        <Cifra etiqueta="Libro (sistema)" :valor="`${c.libroDelMes} del mes + ${resumen.totalSistema - c.libroDelMes} arrastre`" pequeno />
-        <Cifra etiqueta="Conciliados" :valor="`${resumen.conciliados} (${resumen.porReferencia} por referencia)`" pequeno tono="positivo" />
-        <Cifra etiqueta="Pendientes" :valor="`${resumen.pendientesBanco} banco · ${resumen.pendientesSistema} sistema`" pequeno tono="negativo" />
-        <Cifra v-if="resumen.ambiguas" etiqueta="Ambiguos" :valor="String(resumen.ambiguas)" pequeno />
+        <Cifra etiqueta="Extracto (banco)" icono="fa-solid fa-building-columns" :valor="`${resumen.totalBanco} mov.`" pequeno />
+        <Cifra etiqueta="Libro (sistema)" icono="fa-solid fa-book" :valor="`${c.libroDelMes} del mes + ${resumen.totalSistema - c.libroDelMes} arrastre`" pequeno />
+        <Cifra etiqueta="Conciliados" icono="fa-solid fa-link" :valor="`${resumen.conciliados} (${resumen.porReferencia} por referencia)`" pequeno tono="positivo" />
+        <Cifra etiqueta="Pendientes" icono="fa-solid fa-link-slash" :valor="`${resumen.pendientesBanco} banco · ${resumen.pendientesSistema} sistema`" pequeno :tono="resumen.pendientesBanco + resumen.pendientesSistema ? 'alerta' : 'neutro'" />
+        <Cifra v-if="resumen.ambiguas" etiqueta="Ambiguos" icono="fa-solid fa-code-branch" :valor="String(resumen.ambiguas)" pequeno tono="alerta" />
       </div>
       <p v-if="c.tomadosEnOtroPeriodo.banco || c.tomadosEnOtroPeriodo.libro" class="nota">
         Se apartaron {{ c.tomadosEnOtroPeriodo.banco }} movimientos del banco y {{ c.tomadosEnOtroPeriodo.libro }} del libro que ya quedaron emparejados en otro mes.
@@ -187,9 +190,9 @@ const libroPendientes = computed(() => {
 
       <!-- Detalle -->
       <nav class="pestanas">
-        <button :class="{ activa: pestana === 'coincidencias' }" @click="pestana = 'coincidencias'">Emparejados ({{ c.resultado.coincidencias.length }})</button>
-        <button :class="{ activa: pestana === 'banco' }" @click="pestana = 'banco'">Pendientes del banco ({{ c.resultado.soloBanco.length }})</button>
-        <button :class="{ activa: pestana === 'libro' }" @click="pestana = 'libro'">Pendientes del sistema ({{ c.resultado.soloSistema.length }})</button>
+        <button :class="{ activa: pestana === 'coincidencias' }" @click="pestana = 'coincidencias'"><i class="fa-solid fa-link ok"></i> Emparejados ({{ c.resultado.coincidencias.length }})</button>
+        <button :class="{ activa: pestana === 'banco' }" @click="pestana = 'banco'"><i class="fa-solid fa-building-columns mal"></i> Pendientes del banco ({{ c.resultado.soloBanco.length }})</button>
+        <button :class="{ activa: pestana === 'libro' }" @click="pestana = 'libro'"><i class="fa-solid fa-book ojo"></i> Pendientes del sistema ({{ c.resultado.soloSistema.length }})</button>
       </nav>
 
       <div v-if="pestana === 'coincidencias'" class="tabla-envoltura">
@@ -205,8 +208,8 @@ const libroPendientes = computed(() => {
               <td class="mono">{{ m.sistema.tipo }} {{ m.sistema.referencia || '' }}</td>
               <td class="recorta">{{ m.sistema.cliente || '—' }}</td>
               <td>
-                <span class="etiqueta" :class="m.via === 'referencia' ? 'etiqueta--ok' : m.exacta ? 'etiqueta--neutro' : 'etiqueta--aviso'">{{ m.via === 'referencia' ? 'referencia' : m.exacta ? 'exacto' : 'tolerancia' }}</span>
-                <span v-if="m.ambigua" class="etiqueta etiqueta--aviso" style="margin-left: 0.25rem">ambiguo</span>
+                <span class="etiqueta" :class="m.via === 'referencia' ? 'etiqueta--info' : m.exacta ? 'etiqueta--ok' : 'etiqueta--aviso'"><i :class="m.via === 'referencia' ? 'fa-solid fa-hashtag' : m.exacta ? 'fa-solid fa-equals' : 'fa-solid fa-approximately-equal'"></i> {{ m.via === 'referencia' ? 'referencia' : m.exacta ? 'exacto' : 'tolerancia' }}</span>
+                <span v-if="m.ambigua" class="etiqueta etiqueta--aviso" style="margin-left: 0.25rem"><i class="fa-solid fa-code-branch"></i> ambiguo</span>
               </td>
               <td class="num mono">{{ m.difValor ? dinero(m.difValor) : '' }} {{ m.difDias ? `${m.difDias}d` : '' }}</td>
             </tr>
@@ -231,7 +234,7 @@ const libroPendientes = computed(() => {
                 <td class="mono">{{ fecha(m.fecha) }}</td>
                 <td class="mono">{{ m.referencia || '—' }}</td>
                 <td class="recorta">{{ m.concepto || '—' }}</td>
-                <td><span class="etiqueta etiqueta--error">por investigar</span></td>
+                <td><span class="etiqueta etiqueta--error"><i class="fa-solid fa-magnifying-glass"></i> por investigar</span></td>
                 <td class="num" :class="m.signo === 1 ? 'pos' : 'neg'">{{ m.signo === 1 ? '+' : '−' }}{{ dinero(m.valor) }}</td>
               </tr>
               <template v-for="g in c.pendientesBanco.grupos" :key="g.regla.codigo">
@@ -239,7 +242,7 @@ const libroPendientes = computed(() => {
                   <td class="mono">{{ fecha(m.fecha) }}</td>
                   <td class="mono">{{ m.referencia || '—' }}</td>
                   <td class="recorta">{{ m.concepto || '—' }}</td>
-                  <td><span class="etiqueta etiqueta--neutro">{{ g.regla.etiqueta }}</span></td>
+                  <td><span class="etiqueta etiqueta--info"><i class="fa-solid fa-tag"></i> {{ g.regla.etiqueta }}</span></td>
                   <td class="num" :class="m.signo === 1 ? 'pos' : 'neg'">{{ m.signo === 1 ? '+' : '−' }}{{ dinero(m.valor) }}</td>
                 </tr>
               </template>
@@ -281,6 +284,7 @@ const libroPendientes = computed(() => {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.25rem; align-items: flex-start;
   background: $blanco; border: 1px solid $gris-200; border-radius: $radio; padding: 1.5rem; transition: background $transicion;
   &--cerrado { background: $negro; color: $blanco; .nota { color: $gris-400; } }
+  &__icono { font-size: 1.1rem; margin-right: 0.35rem; color: $gris-400; &--ok { color: $verde; } &--ojo { color: $ambar; } }
   &__sup { font-family: $font-secondary; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.18em; color: $gris-500; }
   &__titulo { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; margin: 0.3rem 0 0.4rem; }
 }
