@@ -82,17 +82,17 @@ async function guardar() {
       </Aviso>
 
       <div class="rejilla">
-        <Cifra etiqueta="Entradas" :valor="dinero(analisis.entradas)" tono="positivo" />
-        <Cifra etiqueta="Salidas" :valor="dinero(analisis.salidas)" tono="negativo" />
-        <Cifra etiqueta="Neto" :valor="dinero(analisis.neto)" />
-        <Cifra etiqueta="Periodo" :valor="analisis.rango ? `${fecha(analisis.rango.desde)} — ${fecha(analisis.rango.hasta)}` : '—'" pequeno />
+        <Cifra etiqueta="Entradas" icono="fa-solid fa-arrow-down-long" :valor="dinero(analisis.entradas)" tono="positivo" />
+        <Cifra etiqueta="Salidas" icono="fa-solid fa-arrow-up-long" :valor="dinero(analisis.salidas)" tono="negativo" />
+        <Cifra etiqueta="Neto" icono="fa-solid fa-equals" :valor="dinero(analisis.neto)" />
+        <Cifra etiqueta="Periodo" icono="fa-regular fa-calendar" :valor="analisis.rango ? `${fecha(analisis.rango.desde)} — ${fecha(analisis.rango.hasta)}` : '—'" pequeno />
       </div>
 
       <div class="rejilla rejilla--2">
         <Panel titulo="Continuidad del saldo">
           <p v-if="!analisis.saldos.disponible" class="nota">{{ analisis.saldos.motivo }}</p>
           <template v-else-if="analisis.saldos.integro">
-            <p class="ok">Los {{ analisis.saldos.saltos }} saltos de saldo cuadran con su movimiento. No falta ninguna fila.</p>
+            <p class="ok"><i class="fa-solid fa-circle-check"></i> Los {{ analisis.saldos.saltos }} saltos de saldo cuadran con su movimiento. No falta ninguna fila.</p>
             <dl class="datos" style="margin-top: 0.75rem">
               <dt>Saldo al empezar</dt><dd>{{ dinero(analisis.saldos.saldoInicial) }}</dd>
               <dt>Saldo al terminar</dt><dd>{{ dinero(analisis.saldos.saldoFinal) }}</dd>
@@ -100,7 +100,7 @@ async function guardar() {
             </dl>
           </template>
           <template v-else>
-            <p class="mal"><strong>{{ analisis.saldos.rupturas }} de {{ analisis.saldos.saltos }} saltos no cuadran.</strong></p>
+            <p class="mal"><i class="fa-solid fa-triangle-exclamation"></i> <strong>{{ analisis.saldos.rupturas }} de {{ analisis.saldos.saltos }} saltos no cuadran.</strong></p>
             <p class="nota">Cada uno es una fila que falta, una fila mal leída o un signo cambiado. Conviene resolverlo antes de guardar.</p>
             <ul class="mono lista" style="margin-top: 0.75rem">
               <li v-for="(r, i) in analisis.saldos.detalleRupturas.slice(0, 6)" :key="i">
@@ -113,10 +113,10 @@ async function guardar() {
         <Panel titulo="Cobertura del mes">
           <p v-if="!analisis.cobertura.disponible" class="nota">Sin fechas legibles.</p>
           <p v-else-if="analisis.cobertura.completo" class="ok">
-            El archivo cubre el mes entero: {{ analisis.cobertura.dias }} de {{ analisis.cobertura.diasDelMes }} días, con movimiento en {{ analisis.cobertura.diasConMovimiento }}.
+            <i class="fa-solid fa-circle-check"></i> El archivo cubre el mes entero: {{ analisis.cobertura.dias }} de {{ analisis.cobertura.diasDelMes }} días, con movimiento en {{ analisis.cobertura.diasConMovimiento }}.
           </p>
           <template v-else>
-            <p class="mal"><strong>El archivo no cubre el mes completo.</strong></p>
+            <p class="ojo"><i class="fa-solid fa-triangle-exclamation"></i> <strong>El archivo no cubre el mes completo.</strong></p>
             <p>{{ analisis.cobertura.aviso }}</p>
             <p class="nota" style="margin-top: 0.5rem">Conciliar un mes contra medio mes hace que todo lo que el banco no alcanzó a incluir aparezca como diferencia, y no lo es.</p>
           </template>
@@ -147,7 +147,7 @@ async function guardar() {
               <tr v-for="(m, i) in visibles" :key="i">
                 <td class="mono">{{ fecha(m.fecha) }}</td>
                 <td class="mono">{{ m.referencia || '—' }}</td>
-                <td class="recorta">{{ m.concepto || '—' }} <span v-if="m.signoInferido" class="etiqueta etiqueta--aviso">signo deducido</span></td>
+                <td class="recorta">{{ m.concepto || '—' }} <span v-if="m.signoInferido" class="etiqueta etiqueta--aviso"><i class="fa-solid fa-wand-magic-sparkles"></i> signo deducido</span></td>
                 <td class="num" :class="m.signo === 1 ? 'pos' : 'neg'">{{ m.signo === 1 ? '+' : '−' }}{{ dinero(m.valor) }}</td>
                 <td class="num mono">{{ m.saldo !== null && Number.isFinite(m.saldo) ? dinero(m.saldo) : '—' }}</td>
               </tr>
@@ -179,7 +179,5 @@ async function guardar() {
 </template>
 
 <style lang="scss" scoped>
-.ok { color: $negro; }
-.mal { color: $negro; }
 .lista { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
 </style>
