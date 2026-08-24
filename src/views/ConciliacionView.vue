@@ -67,6 +67,31 @@ async function accion(tipo: 'guardar' | 'cerrar' | 'reabrir') {
   }
 }
 
+const descargando = ref(false)
+
+/**
+ * Contabilidad archiva un respaldo en Excel de cada mes conciliado y lo manda
+ * por correo, así que la descarga tiene que estar a mano en esta pantalla.
+ */
+async function descargarExcel() {
+  if (!c.value) return
+  descargando.value = true
+  error.value = null
+  try {
+    const { archivo, nombre } = await conciliacionService.excel(c.value.cuenta.id, c.value.mes)
+    const url = URL.createObjectURL(archivo)
+    const enlace = document.createElement('a')
+    enlace.href = url
+    enlace.download = nombre
+    enlace.click()
+    URL.revokeObjectURL(url)
+  } catch (e) {
+    error.value = mensajeDe(e)
+  } finally {
+    descargando.value = false
+  }
+}
+
 const estado = computed(() => c.value?.periodo?.estado ?? null)
 const cerrado = computed(() => estado.value === 'CERRADO')
 
@@ -111,6 +136,9 @@ const libroPendientes = computed(() => {
         </select>
       </label>
       <button v-if="c" class="boton boton--secundario" :disabled="cargando" @click="calcular"><i class="fa-solid fa-rotate"></i> Recalcular</button>
+      <button v-if="c" class="boton boton--secundario" :disabled="cargando || descargando" @click="descargarExcel">
+        <i class="fa-solid fa-file-excel"></i> {{ descargando ? 'Preparando…' : 'Descargar Excel' }}
+      </button>
     </div>
 
     <Aviso v-if="error" tipo="error">{{ error }}</Aviso>
